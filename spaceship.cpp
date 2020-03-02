@@ -1,9 +1,13 @@
 #include "spaceship.h"
 
 spaceship::spaceship(wxPoint point_start, wxPoint point_end, const wxPen& pen, const wxBrush& brush) 
-	: ship{ point_start , point_end },
+	:	ship{ point_start , point_end },
 		pen{pen}, 
 		brush{brush} {}
+
+spaceship::~spaceship() {
+	
+}
 
 void spaceship::draw(context& con) {
 	con.SetPen(pen);

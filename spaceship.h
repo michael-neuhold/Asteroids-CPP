@@ -3,10 +3,11 @@
 
 class spaceship : public ml5::object
 {
-
+	
 public:
 	using context = ml5::paint_event::context_t;
 	spaceship(wxPoint point_start, wxPoint point_end, const wxPen& pen, const wxBrush& brush);
+	~spaceship();
 
 	wxPoint get_top_left() const;
 	wxPoint get_bottom_right() const;
