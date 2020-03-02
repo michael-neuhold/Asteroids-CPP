@@ -6,7 +6,7 @@ spaceship::spaceship(wxPoint point_start, wxPoint point_end, const wxPen& pen, c
 		brush{brush} {}
 
 spaceship::~spaceship() {
-	
+	// nothing to do
 }
 
 void spaceship::draw(context& con) {

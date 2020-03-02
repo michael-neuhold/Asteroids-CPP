@@ -12,7 +12,6 @@ draw_application::window::window() : ml5::window{"ML5.Asteroids"} {
 	wxImage::AddHandler(new wxPNGHandler);
 	asteroid_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\spaceship.png"), wxBITMAP_TYPE_PNG);
 	asteroid_image.Rescale(60,60);
-
 }
 
 
@@ -27,13 +26,11 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 
 	std::cout << "key code: " << event.get_key_code() << std::endl;
 
-
-
 	switch (event.get_key_code())
 	{
 	
 	case 114: //ROTATE
-	
+		
 		break;
 	case 314: //LEFT
 		new_top_left		= { top_left.x - offset , top_left.y };
@@ -64,50 +61,44 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 		//return;
 	}
 
-	
-		
 	refresh();
 }
 
 void draw_application::window::on_paint(const ml5::paint_event &event) {
-	/*
-	auto& con{ event.get_context() };
-	// draw shapes on board
-	for (const auto& s : shapes) s->draw(con);
-	// draw current shape
-	if (new_shape) new_shape->draw(con);
-	// draw left-nav-bar
-	if (left_bar) left_bar->draw(con);
-	for (const auto &s : left_bar_icons) s->draw(con);
-	// draw selection marker
-	for (const auto& s : selection_marker) s->draw(con);
-	// draw selected shape
-	if (selected_shape) selected_shape->draw(con);
-	*/
+	
+	// get context to draw
 	auto& con{ event.get_context() };
 	spaceship.draw(con);
+
+	// rotate image with given angle and center
+	asteroid_image = asteroid_image.Rotate(45, {20,20});
+
 	con.DrawBitmap(asteroid_image, { 40 , 40 });
 
-	
 }
 
 bool draw_application::window::valid_position(const wxPoint& pos) {
 	return pos.y >= 0 && pos.y <= get_size().y;
 }
 
-
 void draw_application::window::on_menu(const ml5::menu_event& event) {
-	// do something
+	std::string title = event.get_item();
+	if (title == "Pause") {
+		std::cout << "<< Pause >>" << std::endl;
+	} else if (title == "Reset") {
+		std::cout << "<< Reset >>" << std::endl;
+	} else if (title == "Quit") {
+		std::cout << "<< Quit >>" << std::endl;
+	}
 	refresh();
 }
 
 void draw_application::window::on_init() {
 	add_menu("&Game", {
-		{ "&Pause"		, "<< next shape: line >>"		},
-		{ "&Restart"	, "<< next shape: ellipse >>"	},
-		{ "&Quit"	, "<< next shape: rectangle >>" }
+		{ "&Pause"		, "<< pause game >>"	},
+		{ "&Restart"	, "<< restart game >>"	},
+		{ "&Quit"		, "<< quit game >>"		}
 		});
-
-	set_status_text("Use the mouse to draw a shape");
+	set_status_text("use arrow keys to navigate the spaceship");
 	set_prop_background_brush(*wxGREY_BRUSH);
 }

@@ -20,10 +20,9 @@ private:
 		void on_key(ml5::key_event const& event);
 		bool valid_position(const wxPoint &pos);
 
-		/*spaceship*/
+		// spaceship
 		spaceship spaceship{ {10,10},{20,30},*wxWHITE_PEN,*wxWHITE_BRUSH };
 		wxImage asteroid_image;
 	};
 
-	
 };
