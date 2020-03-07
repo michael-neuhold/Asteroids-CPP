@@ -1,6 +1,5 @@
 #include "appl.h"
 
-
 //draw_application
 auto draw_application::make_window() const->std::unique_ptr<ml5::window> { 
 	return std::make_unique<window>(); 
@@ -8,10 +7,11 @@ auto draw_application::make_window() const->std::unique_ptr<ml5::window> {
 
 //window
 draw_application::window::window() : ml5::window{"ML5.Asteroids"} {
-	// init spaceship .png image
-	wxImage::AddHandler(new wxPNGHandler);
-	asteroid_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\spaceship.png"), wxBITMAP_TYPE_PNG);
-	asteroid_image.Rescale(60,60);
+	for (int i = 0; i < 10; i++) {
+		//asteroids stone{ {rand()%100,rand()%100} , rand() % 20 };
+		//asteroidsContainer.add({ {rand() % 100,rand() % 100} , rand() % 20 });
+	}
+	
 }
 
 
@@ -25,7 +25,6 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 	int offset = 5;
 
 	std::cout << "key code: " << event.get_key_code() << std::endl;
-
 	switch (event.get_key_code())
 	{
 	
@@ -33,28 +32,16 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 		
 		break;
 	case 314: //LEFT
-		new_top_left		= { top_left.x - offset , top_left.y };
-		new_bottom_right	= { bottom_right.x - offset , bottom_right.y };
-		if (valid_position(new_top_left) && valid_position(new_bottom_right))
-			spaceship.set_new_pos(new_top_left, new_bottom_right);
+		spaceship.rotate_left();
 		break;
 	case 315: //UP
-		new_top_left		= { top_left.x , top_left.y - offset };
-		new_bottom_right	= { bottom_right.x , bottom_right.y - offset };
-		if (valid_position(new_top_left) && valid_position(new_bottom_right))
-			spaceship.set_new_pos(new_top_left, new_bottom_right);
+		spaceship.boost(get_size());
 		break;
 	case 316: //RIGHT
-		new_top_left		= { top_left.x + offset , top_left.y };
-		new_bottom_right	= { bottom_right.x + offset , bottom_right.y };
-		if (valid_position(new_top_left) && valid_position(new_bottom_right))
-			spaceship.set_new_pos(new_top_left, new_bottom_right);
+		spaceship.rotate_right();
 		break;
 	case 317: //DOWN
-		new_top_left		= { top_left.x , top_left.y + offset };
-		new_bottom_right	= { bottom_right.x , bottom_right.y + offset };
-		if (valid_position(new_top_left) && valid_position(new_bottom_right))
-			spaceship.set_new_pos(new_top_left, new_bottom_right);
+		std::cout << "nothing to do..." << std::endl;
 		break;
 	default:
 		std::cout << "wrong key..." << std::endl;
@@ -65,15 +52,17 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 }
 
 void draw_application::window::on_paint(const ml5::paint_event &event) {
-	
+
 	// get context to draw
 	auto& con{ event.get_context() };
 	spaceship.draw(con);
+	asteroid_test.draw(con);
 
 	// rotate image with given angle and center
-	asteroid_image = asteroid_image.Rotate(45, {20,20});
+	//asteroid_image = asteroid_image.Rotate(-0.78, {20,20});
+	//asteroid_image.Rotate()
 
-	con.DrawBitmap(asteroid_image, { 40 , 40 });
+	//con.DrawBitmap(spaceship., { 40 , 40 });
 
 }
 
@@ -101,4 +90,13 @@ void draw_application::window::on_init() {
 		});
 	set_status_text("use arrow keys to navigate the spaceship");
 	set_prop_background_brush(*wxGREY_BRUSH);
+	ml5::duration_t time(1000000);
+	start_timer(time);
+}
+
+
+void draw_application::window::on_timer(const ml5::timer_event& event) {
+	std::cout << "timer" << std::endl;
+	asteroid_test.move();
+	refresh();
 }
