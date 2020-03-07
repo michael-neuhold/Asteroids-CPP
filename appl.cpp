@@ -16,13 +16,8 @@ draw_application::window::window() : ml5::window{"ML5.Asteroids"} {
 
 
 void draw_application::window::on_key(ml5::key_event const& event) {
-	
-	wxPoint top_left		= spaceship.get_top_left();
-	wxPoint bottom_right	= spaceship.get_bottom_right();
 
-	wxPoint new_top_left, new_bottom_right;
 	
-	int offset = 5;
 
 	std::cout << "key code: " << event.get_key_code() << std::endl;
 	switch (event.get_key_code())
@@ -35,7 +30,7 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 		spaceship.rotate_left();
 		break;
 	case 315: //UP
-		spaceship.boost(get_size());
+		spaceship.boost(/*get_size()*/);
 		break;
 	case 316: //RIGHT
 		spaceship.rotate_right();
@@ -89,14 +84,18 @@ void draw_application::window::on_init() {
 		{ "&Quit"		, "<< quit game >>"		}
 		});
 	set_status_text("use arrow keys to navigate the spaceship");
-	set_prop_background_brush(*wxGREY_BRUSH);
-	ml5::duration_t time(1000000);
+	set_prop_background_brush(*wxBLACK_BRUSH);
+	
+	/* setup timer */
+	ml5::duration_t time(10000000);
 	start_timer(time);
 }
 
 
 void draw_application::window::on_timer(const ml5::timer_event& event) {
+	std::cout << "intervall: " << event.get_interval().max << std::endl;
 	std::cout << "timer" << std::endl;
-	asteroid_test.move();
+	asteroid_test.move(get_size());
+	spaceship.move(get_size());
 	refresh();
 }

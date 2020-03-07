@@ -23,8 +23,8 @@ private:
 		bool valid_position(const wxPoint &pos);
 
 		// spaceship
-		spaceship spaceship;
-		asteroids asteroid_test{ { 40 , 40 } , 20 };
+		spaceship spaceship{ {100,100}, 0 };
+		asteroids asteroid_test{ { 40 , 40 } , 20, 150 };
 		//ml5::vector<asteroids> asteroidsContainer;
 		//wxImage asteroid_image;
 	};
