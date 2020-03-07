@@ -19,7 +19,6 @@ spaceship::~spaceship() {
 void spaceship::draw(context& con) {
 	spaceship_image.CleanUpHandlers();
 	spaceship_image = original_spaceship_image.Rotate(-degree*(M_PI/180), position);
-	std::cout << "rad: " << degree * (M_PI / 180) << std::endl;
 	con.DrawBitmap(spaceship_image, position);
 }
 

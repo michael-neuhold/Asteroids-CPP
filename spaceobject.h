@@ -8,6 +8,14 @@ public:
 	virtual void move(wxSize size);
 	void stay_in_universe(wxSize size);
 
+	wxPoint get_position() const {
+		return position;
+	}
+
+	int get_degree() const {
+		return degree;
+	}
+
 protected:
 
 	float dx_speed = 0;

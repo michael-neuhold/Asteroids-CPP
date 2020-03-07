@@ -6,7 +6,6 @@ spaceobject::spaceobject(wxPoint pos, int degree)
 		degree{degree}
 {}
 
-
 void spaceobject::move(wxSize size) {
 	dx_speed = sin(degree * M_PI / 180) * 2;
 	dy_speed = -cos(degree * M_PI / 180) * 2;

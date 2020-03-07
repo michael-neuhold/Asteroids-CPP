@@ -23,8 +23,10 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 	switch (event.get_key_code())
 	{
 	
-	case 114: //ROTATE
-		
+	case 32: //shoot
+		bullet * new_bullet;
+		new_bullet = new bullet{ {spaceship.get_position().x + 30, spaceship.get_position().y + 30 },spaceship.get_degree() };
+		bulletContainer.add(new_bullet);
 		break;
 	case 314: //LEFT
 		spaceship.rotate_left();
@@ -55,12 +57,9 @@ void draw_application::window::on_paint(const ml5::paint_event &event) {
 	for (auto &p : asteroidsContainer) {
 		p->draw(con);
 	}
-
-	// rotate image with given angle and center
-	//asteroid_image = asteroid_image.Rotate(-0.78, {20,20});
-	//asteroid_image.Rotate()
-
-	//con.DrawBitmap(spaceship., { 40 , 40 });
+	for (auto &b : bulletContainer) {
+		b->draw(con);
+	}
 
 }
 
@@ -107,6 +106,10 @@ void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &a : asteroidsContainer) {
 		a->move(get_size());
 	}
+	for (auto &b : bulletContainer) {
+		b->boost(get_size());
+	}
+	
 	spaceship.move(get_size());
 	refresh();
 }
