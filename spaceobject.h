@@ -6,7 +6,7 @@ class spaceobject : public ml5::object {
 public:
 	spaceobject(wxPoint pos, int degree);
 	virtual void move(wxSize size);
-	void decrease_speed();
+	void stay_in_universe(wxSize size);
 
 protected:
 

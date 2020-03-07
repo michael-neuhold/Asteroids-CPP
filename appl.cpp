@@ -30,7 +30,7 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 		spaceship.rotate_left();
 		break;
 	case 315: //UP
-		spaceship.boost(/*get_size()*/);
+		spaceship.boost(get_size());
 		break;
 	case 316: //RIGHT
 		spaceship.rotate_right();
@@ -52,6 +52,9 @@ void draw_application::window::on_paint(const ml5::paint_event &event) {
 	auto& con{ event.get_context() };
 	spaceship.draw(con);
 	asteroid_test.draw(con);
+	for (auto &p : asteroidsContainer) {
+		p->draw(con);
+	}
 
 	// rotate image with given angle and center
 	//asteroid_image = asteroid_image.Rotate(-0.78, {20,20});
@@ -89,13 +92,21 @@ void draw_application::window::on_init() {
 	/* setup timer */
 	ml5::duration_t time(10000000);
 	start_timer(time);
+
+	/* setup default asteroids */
+	asteroids* new_stone;
+	for (int i = 0; i < 10; i++) {
+		new_stone = new asteroids({ rand() % get_size().x,rand() % get_size().y }, rand() % 20, rand() % 360);
+		asteroidsContainer.add(new_stone);
+	}
+
 }
 
-
 void draw_application::window::on_timer(const ml5::timer_event& event) {
-	std::cout << "intervall: " << event.get_interval().max << std::endl;
-	std::cout << "timer" << std::endl;
 	asteroid_test.move(get_size());
+	for (auto &a : asteroidsContainer) {
+		a->move(get_size());
+	}
 	spaceship.move(get_size());
 	refresh();
 }

@@ -17,7 +17,7 @@ public:
 	void rotate_right();
 	//void boost(wxSize size);
 	//void move(wxSize size) override;
-	void boost();
+	void boost(wxSize size);
 
 private:
 
