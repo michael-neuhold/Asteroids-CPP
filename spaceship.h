@@ -7,7 +7,7 @@ class spaceship : public spaceobject
 	
 public:
 	using context = ml5::paint_event::context_t;
-	spaceship(wxPoint pos, int degree);
+	spaceship(wxPoint pos, int degree, bool with_boost);
 	~spaceship();
 
 	void draw(context& con);

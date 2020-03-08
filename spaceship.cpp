@@ -3,14 +3,18 @@
 
 #define DEGREE_OFFSET 5
 
-spaceship::spaceship(wxPoint pos, int degree)
+spaceship::spaceship(wxPoint pos, int degree, bool with_boost)
 	:	spaceobject{pos,degree}
 {
+	std::string image_name;
+	if (with_boost) image_name = "spaceship_boost.png";
+	else image_name = "spaceship_white.png";
+
 	wxImage::AddHandler(new wxPNGHandler);
-	spaceship_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\spaceship_white.png"), wxBITMAP_TYPE_PNG);
+	spaceship_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\" + image_name), wxBITMAP_TYPE_PNG);
 	spaceship_image.Rescale(spaceship_size, spaceship_size);
 	
-	original_spaceship_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\spaceship_white.png"), wxBITMAP_TYPE_PNG);
+	original_spaceship_image.LoadFile(wxT("C:\\Users\\michaelneuhold\\Desktop\\" + image_name), wxBITMAP_TYPE_PNG);
 	original_spaceship_image.Rescale(spaceship_size, spaceship_size);
 }
 

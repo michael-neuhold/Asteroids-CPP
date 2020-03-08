@@ -1,4 +1,7 @@
 #include "appl.h"
+#define INTERVAL 10000000 //0
+#define RAND_RADIUS rand() % 20
+#define RAND_DEGREE rand() % 360
 
 //draw_application
 auto draw_application::make_window() const->std::unique_ptr<ml5::window> { 
@@ -31,6 +34,7 @@ void draw_application::window::on_paint(const ml5::paint_event &event) {
 	for (auto &a : asteroid_container) a->draw(con);
 	for (auto &b : bullet_container) b->draw(con);
 	spaceship.draw(con);
+	status.draw(con);
 }
 
 bool draw_application::window::valid_position(const wxPoint& pos) {
@@ -53,27 +57,32 @@ void draw_application::window::on_init() {
 		{ "&Restart"	, "<< restart game >>"	},
 		{ "&Quit"		, "<< quit game >>"		}
 		});
-	set_status_text("use arrow keys to navigate the spaceship");
+	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	set_prop_background_brush(*wxBLACK_BRUSH);
 	
 	/* setup timer */
-	ml5::duration_t time(100000000);
+	ml5::duration_t time(INTERVAL);
 	start_timer(time);
 
 	/* setup asteroids */
 	wxPoint asteroid_position;
 	for (int i = 0; i < 10; i++) {
 		asteroid_position = { rand() % get_size().x,rand() % get_size().y };
-		asteroid_container.add(std::make_unique<asteroid>(asteroid_position, rand() % 20, rand() % 360));
+		asteroid_container.add(std::make_unique<asteroid>(asteroid_position, RAND_RADIUS, RAND_DEGREE));
 	}
 
 	/* setup spaceship */
 	spaceship.set_center(get_size());
+
+	/* setup game status */
+	// nothing todo
+
 }
 
 void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->boost(get_size());
 	spaceship.move(get_size());
+	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	refresh();
 }
