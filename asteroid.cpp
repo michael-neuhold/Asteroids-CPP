@@ -1,16 +1,16 @@
-#include "asteroids.h"
+#include "asteroid.h"
 #include <cmath>
 
-asteroids::asteroids(wxPoint pos, int radius, int degree)
+asteroid::asteroid(wxPoint pos, int radius, int degree)
 	:	spaceobject(pos,degree),
 		radius{radius}
 {}
 
-asteroids::~asteroids() {
+asteroid::~asteroid() {
 	//nothing to do
 }
 
-void asteroids::draw(context& con) {
+void asteroid::draw(context& con) {
 	con.SetPen(*wxWHITE_PEN);
 	con.SetBrush(*wxBLACK_BRUSH);
 	con.DrawCircle(position, radius);

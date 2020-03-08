@@ -15,15 +15,19 @@ public:
 	/* movements */
 	void rotate_left();
 	void rotate_right();
-	//void boost(wxSize size);
-	//void move(wxSize size) override;
 	void boost(wxSize size);
+
+	/* position */
+	void set_center(wxSize size);
 
 private:
 
 	/* spaceship image */
 	wxImage original_spaceship_image;
 	wxImage spaceship_image;
+
+	/* size X = Y */
+	int spaceship_size = 40;
 
 };
 

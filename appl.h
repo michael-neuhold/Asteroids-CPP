@@ -2,7 +2,7 @@
 #include "shapes.h"
 #include <ml5/ml5.h>
 #include "spaceship.h"
-#include "asteroids.h"
+#include "asteroid.h"
 #include "bullet.h"
 
 struct draw_application final : ml5::application {
@@ -25,10 +25,10 @@ private:
 
 		// spaceship
 		spaceship spaceship{ {100,100}, 0 };
-		asteroids asteroid_test{ { 40 , 40 } , 20, 150 };
-		ml5::vector<asteroids*> asteroidsContainer;
-		ml5::vector<bullet*> bulletContainer;
-		//wxImage asteroid_image;
+		ml5::vector<std::unique_ptr<asteroid>>	asteroid_container;
+		ml5::vector<std::unique_ptr<bullet>>	bullet_container;
+		
+		
 	};
 
 };

@@ -2,14 +2,14 @@
 #include <ml5/ml5.h>
 #include "spaceobject.h"
 
-class asteroids : public spaceobject
+class asteroid : public spaceobject
 {
 	
 public:
 	using context = ml5::paint_event::context_t;
 
-	asteroids(wxPoint pos, int radius, int degree);
-	~asteroids();
+	asteroid(wxPoint pos, int radius, int degree);
+	~asteroid();
 
 	void draw(context& con);
 

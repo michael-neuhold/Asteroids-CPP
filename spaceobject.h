@@ -7,6 +7,8 @@ public:
 	spaceobject(wxPoint pos, int degree);
 	virtual void move(wxSize size);
 	void stay_in_universe(wxSize size);
+	bool is_in_universe(wxSize size);
+	double rad_of(int degree);
 
 	wxPoint get_position() const {
 		return position;
