@@ -23,9 +23,10 @@ spaceship::~spaceship() {
 }
 
 void spaceship::draw(context& con) {
+	wxPoint pos{ position };
 	spaceship_image.CleanUpHandlers();
-	spaceship_image = original_spaceship_image.Rotate(-rad_of(degree), position);
-	con.DrawBitmap(spaceship_image, position);
+	spaceship_image = original_spaceship_image.Rotate(-rad_of(degree), pos);
+	con.DrawBitmap(spaceship_image, pos);
 }
 
 /* ==================================================== */
@@ -53,3 +54,4 @@ void spaceship::set_center(wxSize size) {
 	position.x = (size.x / 2) - spaceship_size;
 	position.y = size.y - 40;
 }
+

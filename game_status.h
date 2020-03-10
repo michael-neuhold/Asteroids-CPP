@@ -20,6 +20,7 @@ private:
 	int life_counter;
 	int hit_counter;
 	wxPoint status_position{20,20};
+	
 
 	ml5::vector<spaceship*> spaceships;
 

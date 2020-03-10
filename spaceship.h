@@ -1,6 +1,7 @@
 #pragma once
 #include <ml5/ml5.h>
 #include "spaceobject.h"
+#include <wx/sound.h>
 
 class spaceship : public spaceobject
 {
@@ -27,7 +28,7 @@ private:
 	wxImage spaceship_image;
 
 	/* size X = Y */
-	int spaceship_size = 40;
+	int spaceship_size = 40;	
 
 };
 

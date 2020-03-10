@@ -10,7 +10,7 @@ public:
 	bool is_in_universe(wxSize size);
 	double rad_of(int degree);
 
-	wxPoint get_position() const {
+	wxRealPoint get_position() const {
 		return position;
 	}
 
@@ -23,7 +23,7 @@ protected:
 	float dx_speed = 0;
 	float dy_speed = 0;
 
-	wxPoint position;
+	wxRealPoint position;
 
 	int degree;
 
