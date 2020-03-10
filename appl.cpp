@@ -1,7 +1,8 @@
 #include "appl.h"
-#define INTERVAL 10000000 //0
-#define RAND_RADIUS rand() % 20
+#define INTERVAL 10000000
+#define RAND_RADIUS rand() % 40
 #define RAND_DEGREE rand() % 360
+#define INITIAL_ASTEROIDS 5
 
 //draw_application
 auto draw_application::make_window() const->std::unique_ptr<ml5::window> { 
@@ -9,8 +10,7 @@ auto draw_application::make_window() const->std::unique_ptr<ml5::window> {
 }
 
 //window
-draw_application::window::window() : ml5::window{"ML5.Asteroids"} {
-	
+draw_application::window::window() : ml5::window{"ML5.Asteroids"} {	
 }
 
 void draw_application::window::on_key(ml5::key_event const& event) {
@@ -33,14 +33,11 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 
 void draw_application::window::on_paint(const ml5::paint_event &event) {
 	auto& con{ event.get_context() };
+
 	for (auto &a : asteroid_container) a->draw(con);
 	for (auto &b : bullet_container) b->draw(con);
 	spaceship.draw(con);
 	status.draw(con);
-}
-
-bool draw_application::window::valid_position(const wxPoint& pos) {
-	return pos.y >= 0 && pos.y <= get_size().y;
 }
 
 void draw_application::window::on_menu(const ml5::menu_event& event) {
@@ -68,32 +65,43 @@ void draw_application::window::on_init() {
 
 	/* setup asteroids */
 	wxPoint asteroid_position;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < INITIAL_ASTEROIDS; i++) {
 		asteroid_position = { rand() % get_size().x,rand() % get_size().y };
 		asteroid_container.add(std::make_unique<asteroid>(asteroid_position, RAND_RADIUS, RAND_DEGREE));
 	}
 
 	/* setup spaceship */
 	spaceship.set_center(get_size());
+	
+}
 
-	/* setup game status */
-	// nothing todo
+void draw_application::window::collision_detection() {
+	for (auto& b : bullet_container) {
+		wxPoint pos{ b->get_position() };
+		std::unique_ptr<asteroid>* to_delete{nullptr};
+		for (auto& a : asteroid_container) {
+			if (a->was_hit(pos)) to_delete = &a;
+		}
+		if (to_delete) asteroid_container.remove(*to_delete);
+	}
 
+	for (auto& b : asteroid_container) {
+		if (spaceship.crashed(b->get_region())) {
+			spaceship.set_center(get_size());
+			status.decrease_life_counter();
+			if (status.get_life_counter() == 0) {
+				std::cout << "game over" << std::endl;
+				spaceship.set_center(get_size());
+				spaceship.stop_spaceship();
+			}
+		}
+	}
 }
 
 void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->boost(get_size());
-	
-	for (auto &b : bullet_container) {
-		wxPoint pos{b->get_position()};
-		for (auto &a : asteroid_container) {
-			if (a->was_hit(pos)) {
-				std::cout << " <<<<<  HIIIIITTTT >>>>> " << std::endl;
-			}
-		}
-	}
-	
+	collision_detection();
 	spaceship.move(get_size());
 	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	refresh();

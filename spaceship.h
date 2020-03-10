@@ -20,6 +20,13 @@ public:
 
 	/* position */
 	void set_center(wxSize size);
+	void move(wxSize size) override;
+
+	/* crash */
+	bool crashed(wxRegion asteroid);
+
+	/* game over */
+	void stop_spaceship();
 
 private:
 
@@ -29,6 +36,16 @@ private:
 
 	/* size X = Y */
 	int spaceship_size = 40;	
+
+	// drifting
+	int prev_degree;
+
+	// sound
+	//wxSound fire(R"(C:\\Users\\michaelneuhold\\Desktop\\fire.wav)");
+
+	// game over
+	bool stop{ false };
+
 
 };
 

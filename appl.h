@@ -22,7 +22,9 @@ private:
 		
 		// asteroids...
 		void on_key(ml5::key_event const& event);
-		bool valid_position(const wxPoint &pos);
+
+		// general
+		void collision_detection();
 
 		// spaceship
 		spaceship spaceship{ {100,100}, 0, true };

@@ -9,7 +9,6 @@ asteroid::asteroid(wxPoint pos, int radius, int degree)
 }
 
 asteroid::~asteroid() {
-	//nothing to do
 }
 
 void asteroid::set_points() {
@@ -44,9 +43,13 @@ void asteroid::move(wxSize size) {
 }
 
 bool asteroid::was_hit(wxPoint bullet_pos) {
-	wxPoint points_int[8];
-	for (int i = 0; i < 8; i++) points_int[i] = wxPoint(points[i]);	
-	wxRegion reg{ 8, points_int };
+	wxRegion reg = get_region(); 
 	reg.Intersect(bullet_pos.x, bullet_pos.y, 2, 2);
 	return !reg.IsEmpty();
+}
+
+wxRegion asteroid::get_region() const {
+	wxPoint points_int[8];
+	for (int i = 0; i < 8; i++) points_int[i] = wxPoint(points[i]);
+	return wxRegion{ 8, points_int };
 }

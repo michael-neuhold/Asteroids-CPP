@@ -7,8 +7,8 @@ spaceobject::spaceobject(wxPoint pos, int degree)
 {}
 
 void spaceobject::move(wxSize size) {
-	dx_speed = sin(rad_of(degree)); //* 2;		// 5
-	dy_speed = -cos(rad_of(degree));// *2;	// 5
+	dx_speed = sin(rad_of(degree));
+	dy_speed = -cos(rad_of(degree));
 	position.x += dx_speed;
 	position.y += dy_speed;
 	stay_in_universe(size);

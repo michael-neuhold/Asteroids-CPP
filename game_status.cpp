@@ -21,8 +21,13 @@ int game_status::get_hit_counter() const {
 	return hit_counter;
 }
 void game_status::draw(context& con) const {
-	for (auto &p: spaceships) p->draw(con);
+	for (int i = 0; i < life_counter; i++) spaceships[i]->draw(con);
 	con.SetTextForeground(*wxWHITE);
 	con.DrawText("Asteroids", { con.GetSize().x - 100,20 });
+}
+
+void game_status::decrease_life_counter() {
+	std::cout << "--" << std::endl;
+	life_counter--;
 }
 

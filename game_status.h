@@ -14,6 +14,7 @@ public:
 	int get_life_counter() const;
 	void draw(context& con) const;
 	int get_hit_counter() const;
+	void decrease_life_counter();
 
 private: 
 

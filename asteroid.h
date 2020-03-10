@@ -16,6 +16,8 @@ public:
 	void set_points();
 	bool was_hit(wxPoint bullet_pos);
 
+	wxRegion get_region() const;
+
 private:
 	int radius;
 	wxRealPoint points[8];

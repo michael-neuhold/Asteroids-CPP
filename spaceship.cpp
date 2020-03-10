@@ -4,7 +4,8 @@
 #define DEGREE_OFFSET 5
 
 spaceship::spaceship(wxPoint pos, int degree, bool with_boost)
-	:	spaceobject{pos,degree}
+	:	spaceobject{pos,degree},
+		prev_degree{degree}
 {
 	std::string image_name;
 	if (with_boost) image_name = "spaceship_boost.png";
@@ -48,10 +49,35 @@ void spaceship::boost(wxSize size) {
 	position.x += dx_speed;
 	position.y += dy_speed;
 	stay_in_universe(size);
+	prev_degree = degree;
 }
 
 void spaceship::set_center(wxSize size) {
 	position.x = (size.x / 2) - spaceship_size;
-	position.y = size.y - 40;
+	position.y = size.y / 2;
+	degree = 0;
+	dx_speed = 0;
+	dy_speed = 0;
 }
 
+void spaceship::move(wxSize size) {
+	if (stop) return;
+	dx_speed = sin(rad_of(prev_degree));
+	dy_speed = -cos(rad_of(prev_degree));
+	position.x += dx_speed;
+	position.y += dy_speed;
+	stay_in_universe(size);
+}
+
+bool spaceship::crashed(wxRegion asteroid) {
+	//wxBitmap spaceship_bitmap{spaceship_image};
+	//wxRegion image_region{ wxBitmap(spaceship_image) };
+	wxRegion test{int(position.x),int(position.y),2,2};
+	//std::cout << "x = " << asteroid.GetBox().x << " y = " << asteroid.GetBox().y << std::endl;
+	asteroid.Intersect(test);
+	return !asteroid.IsEmpty();
+}
+
+void spaceship::stop_spaceship() {
+	stop = true;
+}
