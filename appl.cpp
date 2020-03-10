@@ -72,7 +72,7 @@ void draw_application::window::on_init() {
 
 	/* setup spaceship */
 	spaceship.set_center(get_size());
-	
+
 }
 
 void draw_application::window::collision_detection() {

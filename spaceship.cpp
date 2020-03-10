@@ -52,14 +52,6 @@ void spaceship::boost(wxSize size) {
 	prev_degree = degree;
 }
 
-void spaceship::set_center(wxSize size) {
-	position.x = (size.x / 2) - spaceship_size;
-	position.y = size.y / 2;
-	degree = 0;
-	dx_speed = 0;
-	dy_speed = 0;
-}
-
 void spaceship::move(wxSize size) {
 	if (stop) return;
 	dx_speed = sin(rad_of(prev_degree));
@@ -69,11 +61,19 @@ void spaceship::move(wxSize size) {
 	stay_in_universe(size);
 }
 
+void spaceship::set_center(wxSize size) {
+	position.x = (size.x / 2) - (spaceship_size / 2);
+	position.y = (size.y / 2) - (spaceship_size / 2);
+	degree = 0;
+	dx_speed = 0;
+	dy_speed = 0;
+}
+
 bool spaceship::crashed(wxRegion asteroid) {
+	//TODO: get region out of image/bitmap
 	//wxBitmap spaceship_bitmap{spaceship_image};
 	//wxRegion image_region{ wxBitmap(spaceship_image) };
 	wxRegion test{int(position.x),int(position.y),2,2};
-	//std::cout << "x = " << asteroid.GetBox().x << " y = " << asteroid.GetBox().y << std::endl;
 	asteroid.Intersect(test);
 	return !asteroid.IsEmpty();
 }

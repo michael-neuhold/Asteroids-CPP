@@ -5,7 +5,7 @@ game_status::game_status(int live_counter)
 		hit_counter{0}
 {
 	for (int i = 0; i < live_counter; i++) {
-		spaceships.add(new spaceship({status_position.x + i * 40,status_position.y},0, false));
+		spaceships.add(new spaceship({status_position.x + i * 40,status_position.y}, 0, false));
 	}
 }
 
@@ -20,6 +20,7 @@ int game_status::get_life_counter() const {
 int game_status::get_hit_counter() const {
 	return hit_counter;
 }
+
 void game_status::draw(context& con) const {
 	for (int i = 0; i < life_counter; i++) spaceships[i]->draw(con);
 	con.SetTextForeground(*wxWHITE);
@@ -27,7 +28,6 @@ void game_status::draw(context& con) const {
 }
 
 void game_status::decrease_life_counter() {
-	std::cout << "--" << std::endl;
 	life_counter--;
 }
 

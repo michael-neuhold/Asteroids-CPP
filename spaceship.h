@@ -40,12 +40,12 @@ private:
 	// drifting
 	int prev_degree;
 
+	// TODO: create sound object
 	// sound
-	//wxSound fire(R"(C:\\Users\\michaelneuhold\\Desktop\\fire.wav)");
+	// wxSound fire(R"(C:\\Users\\michaelneuhold\\Desktop\\fire.wav)");
 
 	// game over
 	bool stop{ false };
-
 
 };
 
