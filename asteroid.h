@@ -14,7 +14,7 @@ public:
 	void move(wxSize size) override;
 	void draw(context& con);
 	void set_points();
-	//bool hit(wxPoint bullet_pos);
+	bool was_hit(wxPoint bullet_pos);
 
 private:
 	int radius;

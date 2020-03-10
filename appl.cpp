@@ -84,16 +84,16 @@ void draw_application::window::on_init() {
 void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->boost(get_size());
-	/*
+	
 	for (auto &b : bullet_container) {
 		wxPoint pos{b->get_position()};
 		for (auto &a : asteroid_container) {
-			if (a->hit(pos)) {
+			if (a->was_hit(pos)) {
 				std::cout << " <<<<<  HIIIIITTTT >>>>> " << std::endl;
 			}
 		}
 	}
-	*/
+	
 	spaceship.move(get_size());
 	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	refresh();
