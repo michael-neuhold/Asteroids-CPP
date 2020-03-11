@@ -12,39 +12,19 @@ public:
 	~spaceship();
 
 	void draw(context& con);
-
-	/* movements */
 	void rotate_left();
 	void rotate_right();
-	void boost(wxSize size);
-
-	/* position */
 	void set_center(wxSize size);
 	void move(wxSize size) override;
-
-	/* crash */
+	void boost(wxSize size);
 	bool crashed(wxRegion asteroid);
-
-	/* game over */
 	void stop_spaceship();
 
 private:
 
-	/* spaceship image */
 	wxImage original_spaceship_image;
 	wxImage spaceship_image;
-
-	/* size X = Y */
-	int spaceship_size = 40;	
-
-	// drifting
-	int prev_degree;
-
-	// TODO: create sound object
-	// sound
-	// wxSound fire(R"(C:\\Users\\michaelneuhold\\Desktop\\fire.wav)");
-
-	// game over
+	int prev_degree;			// for holding direction (drifting)
 	bool stop{ false };
 
 };

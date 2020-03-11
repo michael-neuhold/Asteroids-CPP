@@ -8,7 +8,4 @@ public:
 	void draw(context& con);
 	void boost(wxSize size);
 
-private:
-
-
 };

@@ -10,13 +10,14 @@ public:
 
 	game_status(int life_counter);
 	~game_status();
-
-	int get_life_counter() const;
-	void draw(context& con) const;
-	int get_hit_counter() const;
-	bool is_game_over() const;
+	
+	void draw(context &con) const;
+	void draw_text(context &con) const;
 	void decrease_life_counter();
 	void increase_hit_counter();
+	bool is_game_over() const;
+	int get_life_counter() const;
+	int get_hit_counter() const;
 
 private: 
 
@@ -24,7 +25,6 @@ private:
 	int hit_counter;
 	bool game_over{ false };
 	wxPoint status_position{20,20};
-	
 	ml5::vector<spaceship*> spaceships;
 
 };

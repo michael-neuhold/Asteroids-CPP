@@ -1,5 +1,4 @@
 #pragma once
-#include "shapes.h"
 #include <ml5/ml5.h>
 #include "spaceship.h"
 #include "asteroid.h"
@@ -16,16 +15,16 @@ private:
 
 		// event handler
 		void on_init() override;
-		//void on_menu(const ml5::menu_event& event) override;
 		void on_paint(const ml5::paint_event& event) override;
 		void on_timer(const ml5::timer_event& event) override;
 		void on_key(ml5::key_event const& event) override;
-		void create_asteroids_at(wxRealPoint asteroid_position, int radius, int cnt);
 
-		// space objects
+		// collisions
 		void collision_detection();
 
-		
+		// generate asteroids
+		void create_asteroids_rand(int cnt);
+		void create_asteroids(wxRealPoint asteroid_position, int radius, int cnt);
 
 		// spaceship
 		spaceship spaceship{ {100,100}, 0, true };

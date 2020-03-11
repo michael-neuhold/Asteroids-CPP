@@ -4,14 +4,42 @@
 #define RAND_DEGREE rand() % 360
 #define INITIAL_ASTEROIDS 5
 
+/* ==================================================== */
+/* GENERAL */
+
 //draw_application
 auto draw_application::make_window() const->std::unique_ptr<ml5::window> { 
 	return std::make_unique<window>();
 }
 
 //window
-draw_application::window::window() : ml5::window{"ML5.Asteroids"} {	
+draw_application::window::window() : ml5::window{"ML5.Asteroids"} {	}
+
+/* ==================================================== */
+/* INIT */
+
+void draw_application::window::on_init() {
+	set_prop_background_brush(*wxBLACK_BRUSH);
+	ml5::duration_t time(INTERVAL);
+	start_timer(time);
+	create_asteroids_rand(INITIAL_ASTEROIDS);
+	spaceship.set_center(get_size());
 }
+
+/* ==================================================== */
+/* CALL DRAW FUNCTIONS */
+
+void draw_application::window::on_paint(const ml5::paint_event& event) {
+	auto& con{ event.get_context() };
+	for (auto& a : asteroid_container) a->draw(con);
+	for (auto& b : bullet_container) b->draw(con);
+	spaceship.draw(con);
+	status.draw(con);
+	set_status_text("HIT COUNT: " + std::to_string(status.get_hit_counter()));
+}
+
+/* ==================================================== */
+/* REACT ON KEY EVENT */
 
 void draw_application::window::on_key(ml5::key_event const& event) {
 	wxPoint bullet_position;
@@ -31,41 +59,25 @@ void draw_application::window::on_key(ml5::key_event const& event) {
 	refresh();
 }
 
-void draw_application::window::on_paint(const ml5::paint_event &event) {
-	auto& con{ event.get_context() };
+/* ==================================================== */
+/* CREATE NEW ASTEROIDS */
 
-	for (auto &a : asteroid_container) a->draw(con);
-	for (auto &b : bullet_container) b->draw(con);
-	spaceship.draw(con);
-	status.draw(con);
-	set_status_text("HIT COUNT: " + std::to_string(status.get_hit_counter()));
-}
-
-void draw_application::window::on_init() {
-
-	set_prop_background_brush(*wxBLACK_BRUSH);
-	
-	/* setup timer */
-	ml5::duration_t time(INTERVAL);
-	start_timer(time);
-
-	/* setup asteroids */
+void draw_application::window::create_asteroids_rand(int cnt) {
 	wxPoint asteroid_position;
-	for (int i = 0; i < INITIAL_ASTEROIDS; i++) {
+	for (int i = 0; i < cnt; i++) {
 		asteroid_position = { rand() % get_size().x,rand() % get_size().y };
-		asteroid_container.add(std::make_unique<asteroid>(asteroid_position, RAND_RADIUS, RAND_DEGREE));
+		asteroid_container.add(std::make_unique<asteroid>(wxPoint(asteroid_position), RAND_RADIUS, RAND_DEGREE));
 	}
-
-	/* setup spaceship */
-	spaceship.set_center(get_size());
-
 }
 
-void draw_application::window::create_asteroids_at(wxRealPoint asteroid_position, int radius, int cnt) {
+void draw_application::window::create_asteroids(wxRealPoint asteroid_position, int radius, int cnt) {
 	for (int i = 0; i < cnt; i++) {
 		asteroid_container.add(std::make_unique<asteroid>(wxPoint(asteroid_position), radius, RAND_DEGREE));
 	}
 }
+
+/* ==================================================== */
+/* COLLISIONS */
 
 void draw_application::window::collision_detection() {
 	wxRealPoint new_asteroid_pos;
@@ -83,9 +95,8 @@ void draw_application::window::collision_detection() {
 		}
 
 		if (to_delete) {
-			
-			if (new_asteroid_radius >= 10) {
-				create_asteroids_at(new_asteroid_pos, new_asteroid_radius / 2, 2);
+			if (new_asteroid_radius >= 20) {
+				create_asteroids(new_asteroid_pos, new_asteroid_radius / 2, 2);
 			}
 			asteroid_container.remove(*to_delete);
 		}
@@ -104,7 +115,11 @@ void draw_application::window::collision_detection() {
 	
 }
 
+/* ==================================================== */
+/* UPDATE GAME STATE */
+
 void draw_application::window::on_timer(const ml5::timer_event& event) {
+	create_asteroids_rand(INITIAL_ASTEROIDS - asteroid_container.size());
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->boost(get_size());
 	collision_detection();
