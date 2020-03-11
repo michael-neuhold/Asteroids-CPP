@@ -38,25 +38,11 @@ void draw_application::window::on_paint(const ml5::paint_event &event) {
 	for (auto &b : bullet_container) b->draw(con);
 	spaceship.draw(con);
 	status.draw(con);
-}
-
-void draw_application::window::on_menu(const ml5::menu_event& event) {
-	std::string title = event.get_item();
-	if (title == "Pause")		{ std::cout << "<< Pause >>" << std::endl; }
-	else if (title == "Reset")	{ std::cout << "<< Reset >>" << std::endl; }
-	else if (title == "Quit")	{ std::cout << "<< Quit >>" << std::endl; on_exit(); }
-	refresh();
+	set_status_text("HIT COUNT: " + std::to_string(status.get_hit_counter()));
 }
 
 void draw_application::window::on_init() {
 
-	/* setup window options */
-	add_menu("&Game", {
-		{ "&Pause"		, "<< pause game >>"	},
-		{ "&Restart"	, "<< restart game >>"	},
-		{ "&Quit"		, "<< quit game >>"		}
-		});
-	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	set_prop_background_brush(*wxBLACK_BRUSH);
 	
 	/* setup timer */
@@ -75,14 +61,34 @@ void draw_application::window::on_init() {
 
 }
 
+void draw_application::window::create_asteroids_at(wxRealPoint asteroid_position, int radius, int cnt) {
+	for (int i = 0; i < cnt; i++) {
+		asteroid_container.add(std::make_unique<asteroid>(wxPoint(asteroid_position), radius, RAND_DEGREE));
+	}
+}
+
 void draw_application::window::collision_detection() {
+	wxRealPoint new_asteroid_pos;
+	int new_asteroid_radius;
 	for (auto& b : bullet_container) {
 		wxPoint pos{ b->get_position() };
 		std::unique_ptr<asteroid>* to_delete{nullptr};
 		for (auto& a : asteroid_container) {
-			if (a->was_hit(pos)) to_delete = &a;
+			if (a->was_hit(pos)) {
+				to_delete = &a;
+				new_asteroid_pos = a->get_position();
+				new_asteroid_radius = a->get_radius();
+				status.increase_hit_counter();
+			}
 		}
-		if (to_delete) asteroid_container.remove(*to_delete);
+
+		if (to_delete) {
+			
+			if (new_asteroid_radius >= 10) {
+				create_asteroids_at(new_asteroid_pos, new_asteroid_radius / 2, 2);
+			}
+			asteroid_container.remove(*to_delete);
+		}
 	}
 
 	for (auto& b : asteroid_container) {
@@ -90,12 +96,12 @@ void draw_application::window::collision_detection() {
 			spaceship.set_center(get_size());
 			status.decrease_life_counter();
 			if (status.get_life_counter() == 0) {
-				std::cout << "game over" << std::endl;
 				spaceship.set_center(get_size());
 				spaceship.stop_spaceship();
 			}
 		}
 	}
+	
 }
 
 void draw_application::window::on_timer(const ml5::timer_event& event) {
@@ -103,6 +109,5 @@ void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &b : bullet_container) b->boost(get_size());
 	collision_detection();
 	spaceship.move(get_size());
-	set_status_text("hits: " + std::to_string(status.get_hit_counter()));
 	refresh();
 }

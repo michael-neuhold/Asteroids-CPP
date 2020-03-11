@@ -16,13 +16,16 @@ private:
 
 		// event handler
 		void on_init() override;
-		void on_menu(const ml5::menu_event& event) override;
+		//void on_menu(const ml5::menu_event& event) override;
 		void on_paint(const ml5::paint_event& event) override;
 		void on_timer(const ml5::timer_event& event) override;
 		void on_key(ml5::key_event const& event) override;
+		void create_asteroids_at(wxRealPoint asteroid_position, int radius, int cnt);
 
 		// space objects
 		void collision_detection();
+
+		
 
 		// spaceship
 		spaceship spaceship{ {100,100}, 0, true };

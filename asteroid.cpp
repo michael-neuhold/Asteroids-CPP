@@ -53,3 +53,11 @@ wxRegion asteroid::get_region() const {
 	for (int i = 0; i < 8; i++) points_int[i] = wxPoint(points[i]);
 	return wxRegion{ 8, points_int };
 }
+
+int asteroid::get_degree() const {
+	return degree;
+}
+
+int asteroid::get_radius() const {
+	return radius;
+}

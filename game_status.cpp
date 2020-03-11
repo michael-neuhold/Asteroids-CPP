@@ -25,9 +25,24 @@ void game_status::draw(context& con) const {
 	for (int i = 0; i < life_counter; i++) spaceships[i]->draw(con);
 	con.SetTextForeground(*wxWHITE);
 	con.DrawText("Asteroids", { con.GetSize().x - 100,20 });
+	if (game_over) {
+		wxFont font{ con.GetFont() };
+		font.SetPointSize(30);
+		con.SetFont(font);
+		con.SetTextForeground(*wxWHITE);
+		con.DrawText("Game Over", { con.GetSize().x / 2 - 100,con.GetSize().y / 2 - 30 });
+	}
 }
 
 void game_status::decrease_life_counter() {
 	life_counter--;
+	if (life_counter == 0) game_over = true;
 }
 
+void game_status::increase_hit_counter() {
+	hit_counter++;
+}
+
+bool game_status::is_game_over() const {
+	return game_over;
+}

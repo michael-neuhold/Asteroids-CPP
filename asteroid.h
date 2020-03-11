@@ -17,6 +17,8 @@ public:
 	bool was_hit(wxPoint bullet_pos);
 
 	wxRegion get_region() const;
+	int get_degree() const;
+	int get_radius() const;
 
 private:
 	int radius;
