@@ -11,6 +11,7 @@ struct draw_application final : ml5::application {
 private:
 	struct window final : ml5::window {
 		window();
+		~window();
 	private:
 
 		// event handler
@@ -21,15 +22,22 @@ private:
 
 		// collisions
 		void collision_detection();
+		void check_bullet_asteroid();
+		void check_spaceship_asteroid();
+		void remove_bullets();
+		
 
 		// generate asteroids
 		void create_asteroids_rand(int cnt);
 		void create_asteroids(wxRealPoint asteroid_position, int radius, int cnt);
 
+		// generate bullet
+		void create_bullet();
+
 		// spaceship
 		spaceship spaceship{ {100,100}, 0, true };
-		ml5::vector<std::unique_ptr<asteroid>>	asteroid_container;
-		ml5::vector<std::unique_ptr<bullet>>	bullet_container;
+		ml5::vector<std::shared_ptr<asteroid>>	asteroid_container;
+		ml5::vector<std::shared_ptr<bullet>>	bullet_container;
 		
 		// game status
 		game_status status{3};

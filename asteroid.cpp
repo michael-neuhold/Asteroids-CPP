@@ -58,10 +58,11 @@ void asteroid::move(wxSize size) {
 /* ==================================================== */
 /* COLLISION */
 
-bool asteroid::was_hit(wxPoint bullet_pos) {
+bool asteroid::was_hit(wxRealPoint bullet_pos) {
 	wxRegion reg = get_region(); 
 	reg.Intersect(bullet_pos.x, bullet_pos.y, 3, 3);
 	return !reg.IsEmpty();
+	//return false;
 }
 
 /* ==================================================== */

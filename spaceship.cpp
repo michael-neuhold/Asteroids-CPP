@@ -97,5 +97,5 @@ bool spaceship::crashed(wxRegion asteroid) {
 /* END */
 
 void spaceship::stop_spaceship() {
-	//stop = true;
+	stop = true;
 }
