@@ -12,7 +12,7 @@ public:
 	~game_status();
 	
 	void draw(context &con) const;
-	void draw_text(context &con) const;
+
 	void decrease_life_counter();
 	void increase_hit_counter();
 	bool is_game_over() const;

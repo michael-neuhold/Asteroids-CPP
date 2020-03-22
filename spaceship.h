@@ -18,14 +18,12 @@ public:
 	void move(wxSize size) override;
 	void boost(wxSize size);
 	bool crashed(wxRegion asteroid);
-	void stop_spaceship();
 
 private:
 
 	wxImage original_spaceship_image;
 	wxImage spaceship_image;
 	int prev_degree;			// for holding direction (drifting)
-	bool stop{ false };
 
 };
 

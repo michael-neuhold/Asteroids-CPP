@@ -6,12 +6,14 @@ class spaceobject : public ml5::object {
 public:
 	spaceobject(wxPoint pos, int degree);
 
-	virtual void move(wxSize size);
+	virtual void move(wxSize size) = 0;
 	void stay_in_universe(wxSize size);
 	bool is_in_universe(wxSize size);
 	double rad_of(int degree);
 	wxRealPoint get_position() const;
 	int get_degree() const;
+	void stop();
+	void toggle_stop();
 
 protected:
 	
@@ -19,5 +21,6 @@ protected:
 	float dx_speed = 0;
 	float dy_speed = 0;
 	wxRealPoint position;
+	bool is_stopped{ false };
 
 };

@@ -4,10 +4,10 @@
 #define DEGREE_OFFSET 5
 #define CIRCLE_DEGREE 360
 #define SPACESHIP_SIZE 40
+#define INIT_SPEED 2
+#define BOOST_SPEED 5
 
-/* ==================================================== */
-/* GENERAL */
-
+/* GENERAL ============================================ */
 spaceship::spaceship(wxPoint pos, int degree, bool with_boost)
 	: spaceobject{ pos,degree },
 	prev_degree{ degree }
@@ -28,9 +28,7 @@ spaceship::~spaceship() {
 	wxImage::CleanUpHandlers();
 }
 
-/* ==================================================== */
-/* DRAW SPACESHIP */
-
+/* DRAW SPACESHIP ===================================== */
 void spaceship::draw(context& con) {
 	wxPoint pos{ position };
 	spaceship_image.CleanUpHandlers();
@@ -38,25 +36,24 @@ void spaceship::draw(context& con) {
 	con.DrawBitmap(spaceship_image, pos);
 }
 
-/* ==================================================== */
-/* ROTATION */
-
+/* ROTATION =========================================== */
 void spaceship::rotate_left() {
+	if (is_stopped) return;
 	degree -= DEGREE_OFFSET;
 	if (degree == -DEGREE_OFFSET) degree = CIRCLE_DEGREE - DEGREE_OFFSET;
 }
 
 void spaceship::rotate_right() {
+	if (is_stopped) return;
 	degree += DEGREE_OFFSET;
 	if (degree == CIRCLE_DEGREE + DEGREE_OFFSET) degree = DEGREE_OFFSET;
 }
 
-/* ==================================================== */
-/* MOVEMENT */
-
+/* MOVEMENT =========================================== */
 void spaceship::boost(wxSize size) {
-	dx_speed += sin(rad_of(degree)) * 5;
-	dy_speed += -cos(rad_of(degree)) * 5;
+	if (is_stopped) return;
+	dx_speed += sin(rad_of(degree)) * BOOST_SPEED;
+	dy_speed += -cos(rad_of(degree)) * BOOST_SPEED;
 	position.x += dx_speed;
 	position.y += dy_speed;
 	stay_in_universe(size);
@@ -64,17 +61,15 @@ void spaceship::boost(wxSize size) {
 }
 
 void spaceship::move(wxSize size) {
-	if (stop) return;
-	dx_speed = sin(rad_of(prev_degree)) * 2;
-	dy_speed = -cos(rad_of(prev_degree)) * 2;
+	if (is_stopped) return;
+	dx_speed = sin(rad_of(prev_degree)) * INIT_SPEED;
+	dy_speed = -cos(rad_of(prev_degree)) * INIT_SPEED;
 	position.x += dx_speed;
 	position.y += dy_speed;
 	stay_in_universe(size);
 }
 
-/* ==================================================== */
-/* SET CENTER */
-
+/* SET CENTER ========================================= */
 void spaceship::set_center(wxSize size) {
 	position.x = (size.x / 2) - (SPACESHIP_SIZE / 2);
 	position.y = (size.y / 2) - (SPACESHIP_SIZE / 2);
@@ -84,18 +79,9 @@ void spaceship::set_center(wxSize size) {
 	dy_speed = 0;
 }
 
-/* ==================================================== */
-/* COLLISION */
-
+/* COLLISION ========================================== */
 bool spaceship::crashed(wxRegion asteroid) {
 	wxRegion test{ int(position.x),int(position.y),1,1 };
 	asteroid.Intersect(test);
 	return !asteroid.IsEmpty();
-}
-
-/* ==================================================== */
-/* END */
-
-void spaceship::stop_spaceship() {
-	stop = true;
 }

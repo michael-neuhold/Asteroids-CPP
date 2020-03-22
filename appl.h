@@ -19,6 +19,7 @@ private:
 		void on_paint(const ml5::paint_event& event) override;
 		void on_timer(const ml5::timer_event& event) override;
 		void on_key(ml5::key_event const& event) override;
+		void on_size(const ml5::size_event & event);
 
 		// collisions
 		void collision_detection();
@@ -26,13 +27,14 @@ private:
 		void check_spaceship_asteroid();
 		void remove_bullets();
 		
-
 		// generate asteroids
 		void create_asteroids_rand(int cnt);
 		void create_asteroids(wxRealPoint asteroid_position, int radius, int cnt);
 
 		// generate bullet
 		void create_bullet();
+
+		void pause();
 
 		// spaceship
 		spaceship spaceship{ {100,100}, 0, true };
