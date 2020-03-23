@@ -12,7 +12,8 @@ auto draw_application::make_window() const->std::unique_ptr<ml5::window> {
 	return std::make_unique<window>();
 }
 
-draw_application::window::window() : ml5::window{"ML5.Asteroids"} {	
+draw_application::window::window() 
+  : ml5::window{"ML5.Asteroids"} {	
 	set_prop_initial_size({1200,900});
 }
 
@@ -50,6 +51,7 @@ void draw_application::window::pause() {
 	if (status.is_game_over()) return;
 	for (auto& a : asteroid_container) a->toggle_stop();
 	for (auto& b : bullet_container) b->toggle_stop();
+	for (auto& u : ufo_container) u->toggle_stop();
 	spaceship.toggle_stop();
 }
 

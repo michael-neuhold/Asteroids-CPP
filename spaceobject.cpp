@@ -3,8 +3,8 @@
 
 /* GENERAL ============================================ */
 spaceobject::spaceobject(wxPoint pos, int degree) 
-	:	position{pos},
-		degree{degree}
+  : position{pos},
+    degree{degree}
 {}
 
 /* POSITION =========================================== */

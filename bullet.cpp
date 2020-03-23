@@ -2,8 +2,9 @@
 #define INIT_SPEED 5
 
 /* GENERAL ============================================ */
-bullet::bullet(wxPoint pos, int degree) : spaceobject{pos,degree} {
-}
+bullet::bullet(wxPoint pos, int degree) 
+  : spaceobject{pos,degree} 
+{}
 
 /* DRAW =============================================== */
 void bullet::draw(context& con) {

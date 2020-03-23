@@ -5,9 +5,9 @@
 
 /* GENERAL ============================================ */
 asteroid::asteroid(wxPoint pos, int radius, int degree)
-	:	spaceobject(pos,degree), 
-		radius{radius},
-		speed_factor{ rand() % 3 + 1}
+  :	spaceobject(pos,degree), 
+	radius{radius},
+	speed_factor{ rand() % 3 + 1}
 {
 	set_points();
 }
@@ -54,7 +54,6 @@ bool asteroid::was_hit(wxRealPoint bullet_pos) {
 	wxRegion reg = get_region(); 
 	reg.Intersect(bullet_pos.x, bullet_pos.y, 3, 3);
 	return !reg.IsEmpty();
-	//return false;
 }
 
 /* GETTER ============================================= */

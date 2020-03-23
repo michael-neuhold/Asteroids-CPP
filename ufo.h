@@ -3,6 +3,8 @@
 #include <ml5/ml5.h>
 #include "spaceobject.h"
 
+#define NUMBER_OF_POINTS 11
+
 class ufo : public spaceobject {
 
 public:
@@ -17,7 +19,7 @@ public:
 	wxRegion get_region() const;
 
 private:
-	wxRealPoint point_container[11] = { 
+	wxRealPoint point_container[NUMBER_OF_POINTS] = {
 			{ -10,8.5 }, { -6,8 }, { -2,7.5 }, 
 			{ -1,5 }, { 0,4.5 }, { 1,5 }, 
 			{ 2,7.5 }, { 6,8 }, { 10,8.5 }, 
