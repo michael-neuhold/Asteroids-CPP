@@ -4,6 +4,7 @@
 #include "asteroid.h"
 #include "bullet.h"
 #include "game_status.h"
+#include "ufo.h"
 
 struct draw_application final : ml5::application {
 	auto make_window() const->std::unique_ptr<ml5::window> override;
@@ -25,21 +26,26 @@ private:
 		void collision_detection();
 		void check_bullet_asteroid();
 		void check_spaceship_asteroid();
+		void check_bullet_ufo();
 		void remove_bullets();
 		
 		// generate asteroids
 		void create_asteroids_rand(int cnt);
 		void create_asteroids(wxRealPoint asteroid_position, int radius, int cnt);
 
+		// generate ufos
+		void create_ufo_rand(int cnt);
+
 		// generate bullet
 		void create_bullet();
 
 		void pause();
 
-		// spaceship
+		// spaceobjects
 		spaceship spaceship{ {100,100}, 0, true };
 		ml5::vector<std::shared_ptr<asteroid>>	asteroid_container;
 		ml5::vector<std::shared_ptr<bullet>>	bullet_container;
+		ml5::vector<std::shared_ptr<ufo>>		ufo_container;
 		
 		// game status
 		game_status status{3};

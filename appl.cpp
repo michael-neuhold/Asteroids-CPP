@@ -28,6 +28,7 @@ void draw_application::window::on_init() {
 	start_timer(time);
 	create_asteroids_rand(INITIAL_ASTEROIDS);
 	spaceship.set_center(get_size());
+	create_ufo_rand(2);
 }
 
 /* CALL DRAW FUNCTIONS =================================*/
@@ -36,6 +37,7 @@ void draw_application::window::on_paint(const ml5::paint_event& event) {
 	for (auto& a : asteroid_container) a->draw(con);
 	for (auto& b : bullet_container) b->draw(con);
 	spaceship.draw(con);
+	for (auto& u : ufo_container) u->draw(con);
 	status.draw(con);
 	if(!status.is_game_over()) 
 		set_status_text("HIT COUNT: " + std::to_string(status.get_hit_counter()));
@@ -95,6 +97,18 @@ void draw_application::window::create_asteroids(wxRealPoint asteroid_position, i
 	}
 }
 
+/* CREATE NEW RAND UFO= ================================*/
+void draw_application::window::create_ufo_rand(int cnt) {
+	wxPoint ufo_position;
+	for (int i = 0; i < cnt; i++) {
+		ufo_position = { 
+			rand() % get_size().x,
+			rand() % get_size().y 
+		};
+		ufo_container.add(std::make_shared<ufo>(ufo_position,RAND_DEGREE));
+	}
+}
+
 /* COLLISION BULLET ASTEROID ===========================*/
 void draw_application::window::check_bullet_asteroid() {
 	wxRealPoint new_asteroid_pos;
@@ -141,11 +155,28 @@ void draw_application::window::check_spaceship_asteroid() {
 	}
 }
 
+/* COLLISION BULLET UFO =================================*/
+void draw_application::window::check_bullet_ufo() {
+	for (auto & b : bullet_container) {
+		std::shared_ptr<ufo> to_delete{nullptr};
+		for (auto & u : ufo_container) {
+			if (u->was_hit(b->get_position())) {
+				std::cout << "hit ";
+				to_delete = u;
+			}
+		}
+		if (to_delete) {
+			ufo_container.remove(to_delete);
+		}
+	}
+}
+
 /* COLLISION DETECTION ==================================*/
 void draw_application::window::collision_detection() {
 	check_bullet_asteroid();
 	check_spaceship_asteroid();
 	remove_bullets();
+	check_bullet_ufo();
 }
 
 /* UPDATE GAME STATE ===================================*/
@@ -154,6 +185,7 @@ void draw_application::window::on_timer(const ml5::timer_event& event) {
 	create_asteroids(asteroid_position, 40, INITIAL_ASTEROIDS - asteroid_container.size());
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->move(get_size());
+	for (auto &u: ufo_container) u->move(get_size());
 	collision_detection();
 	spaceship.move(get_size());
 	refresh();

@@ -31,6 +31,7 @@ spaceship::~spaceship() {
 /* DRAW SPACESHIP ===================================== */
 void spaceship::draw(context& con) {
 	wxPoint pos{ position };
+	spaceship_image.Destroy();
 	spaceship_image.CleanUpHandlers();
 	spaceship_image = original_spaceship_image.Rotate(-rad_of(degree), pos);
 	con.DrawBitmap(spaceship_image, pos);
