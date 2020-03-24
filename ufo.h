@@ -13,9 +13,9 @@ public:
 	ufo(wxRealPoint pos, int degree);
 	~ufo();
 
-	void move(wxSize size) override;
+	void move(const wxSize &size) override;
 	void draw(context& con);
-	bool was_hit(wxRealPoint bullet_pos);
+	bool was_hit(const wxRealPoint &bullet_pos);
 	wxRegion get_region() const;
 
 private:

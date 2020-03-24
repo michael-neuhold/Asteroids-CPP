@@ -1,5 +1,6 @@
 #include "bullet.h"
-#define INIT_SPEED 5
+
+constexpr int INIT_SPEED{ 5 };
 
 /* GENERAL ============================================ */
 bullet::bullet(wxPoint pos, int degree) 
@@ -14,7 +15,7 @@ void bullet::draw(context& con) {
 }
 
 /* MOVEMENT =========================================== */
-void bullet::move(wxSize size) {
+void bullet::move(const wxSize &size) {
 	if (is_stopped) return;
 	dx_speed += sin(degree * M_PI / 180) * INIT_SPEED;
 	dy_speed += -cos(degree * M_PI / 180) * INIT_SPEED;

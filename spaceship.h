@@ -14,9 +14,9 @@ public:
 	void draw(context& con);
 	void rotate_left();
 	void rotate_right();
-	void set_center(wxSize size);
-	void move(wxSize size) override;
-	void boost(wxSize size);
+	void set_center(const wxSize &size);
+	void move(const wxSize &size) override;
+	void boost(const wxSize &size);
 	bool crashed(wxRegion asteroid);
 
 private:

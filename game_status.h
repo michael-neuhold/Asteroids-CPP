@@ -3,7 +3,7 @@
 #include <ml5/ml5.h>
 #include "spaceship.h"
 
-class game_status {
+class game_status : ml5::object{
 
 public:
 	using context = ml5::paint_event::context_t;
@@ -25,6 +25,6 @@ private:
 	int hit_counter;
 	bool game_over{ false };
 	wxPoint status_position{20,20};
-	ml5::vector<spaceship*> spaceships;
+	ml5::vector<std::shared_ptr<spaceship>> spaceships;
 
 };

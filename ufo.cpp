@@ -23,7 +23,7 @@ void ufo::draw(context& con) {
 }
 
 /* MOVE =============================================== */
-void ufo::move(wxSize size) {
+void ufo::move(const wxSize &size) {
 	if (is_stopped) return;
 	dx_speed = sin(rad_of(degree));
 	dy_speed = -cos(rad_of(degree));
@@ -33,7 +33,7 @@ void ufo::move(wxSize size) {
 }
 
 /* COLLISION ========================================== */
-bool ufo::was_hit(wxRealPoint bullet_pos) {
+bool ufo::was_hit(const wxRealPoint &bullet_pos) {
 	wxRegion reg = get_region();
 	reg.Intersect(bullet_pos.x, bullet_pos.y, 3, 3);
 	return !reg.IsEmpty();

@@ -6,11 +6,16 @@ game_status::game_status(int live_counter)
   hit_counter{0}
 {
 	for (int i = 0; i < live_counter; i++) {
-		spaceships.add(new spaceship({status_position.x + i * 40,status_position.y}, 0, false));
+		wxPoint pos{ status_position.x + i * 40,status_position.y };
+		spaceships.add(
+			std::make_shared<spaceship>(pos, 0, false)
+		);
 	}
 }
 
-game_status::~game_status() { }
+game_status::~game_status() {
+	spaceships.clear();
+}
 
 /* DRAW =============================================== */
 void game_status::draw(context& con) const {

@@ -1,11 +1,11 @@
 ﻿#include "spaceship.h"
 #include <cmath>
 
-#define DEGREE_OFFSET 5
-#define CIRCLE_DEGREE 360
-#define SPACESHIP_SIZE 40
-#define INIT_SPEED 2
-#define BOOST_SPEED 5
+constexpr int DEGREE_OFFSET{ 5 };
+constexpr int CIRCLE_DEGREE{ 360 };
+constexpr int SPACESHIP_SIZE{ 40 };
+constexpr int INIT_SPEED{ 2 };
+constexpr int BOOST_SPEED{ 5 };
 
 /* GENERAL ============================================ */
 spaceship::spaceship(wxPoint pos, int degree, bool with_boost)
@@ -51,7 +51,7 @@ void spaceship::rotate_right() {
 }
 
 /* MOVEMENT =========================================== */
-void spaceship::boost(wxSize size) {
+void spaceship::boost(const wxSize &size) {
 	if (is_stopped) return;
 	dx_speed += sin(rad_of(degree)) * BOOST_SPEED;
 	dy_speed += -cos(rad_of(degree)) * BOOST_SPEED;
@@ -61,7 +61,7 @@ void spaceship::boost(wxSize size) {
 	prev_degree = degree;
 }
 
-void spaceship::move(wxSize size) {
+void spaceship::move(const wxSize &size) {
 	if (is_stopped) return;
 	dx_speed = sin(rad_of(prev_degree)) * INIT_SPEED;
 	dy_speed = -cos(rad_of(prev_degree)) * INIT_SPEED;
@@ -71,7 +71,7 @@ void spaceship::move(wxSize size) {
 }
 
 /* SET CENTER ========================================= */
-void spaceship::set_center(wxSize size) {
+void spaceship::set_center(const wxSize &size) {
 	position.x = (size.x / 2) - (SPACESHIP_SIZE / 2);
 	position.y = (size.y / 2) - (SPACESHIP_SIZE / 2);
 	degree = 0;

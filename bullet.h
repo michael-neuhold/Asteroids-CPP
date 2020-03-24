@@ -8,6 +8,6 @@ class bullet : public spaceobject {
 public:
 	bullet(wxPoint pos, int degree);
 	void draw(context& con);
-	void move(wxSize size);
+	void move(const wxSize &size);
 
 };

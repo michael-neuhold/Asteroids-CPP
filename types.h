@@ -8,4 +8,8 @@ enum key_nav {
 	PAUSE = 112
 };
 
+struct asteroid_info_t {
+	wxRealPoint pos;
+	int radius;
+};
 

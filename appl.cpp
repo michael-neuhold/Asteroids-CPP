@@ -1,11 +1,13 @@
 #include "appl.h"
 #include "types.h"
 
-#define INTERVAL 1000000 //0
 #define RAND_RADIUS rand() % 40
 #define RAND_DEGREE rand() % 360
-#define INITIAL_ASTEROIDS 20
-#define SPACESHIP_SIZE 40
+
+/* CONST ===============================================*/
+constexpr int INTERVAL{ 1000000 };
+constexpr int INITIAL_ASTEROIDS{ 20 };
+constexpr int SPACESHIP_SIZE{ 40 };
 
 /* GENERAL =============================================*/
 auto draw_application::make_window() const->std::unique_ptr<ml5::window> { 
@@ -37,8 +39,8 @@ void draw_application::window::on_paint(const ml5::paint_event& event) {
 	auto& con{ event.get_context() };
 	for (auto& a : asteroid_container) a->draw(con);
 	for (auto& b : bullet_container) b->draw(con);
-	spaceship.draw(con);
 	for (auto& u : ufo_container) u->draw(con);
+	spaceship.draw(con);
 	status.draw(con);
 	if(!status.is_game_over()) 
 		set_status_text("HIT COUNT: " + std::to_string(status.get_hit_counter()));
@@ -77,59 +79,64 @@ void draw_application::window::create_bullet() {
 		wxPoint(spaceship.get_position()).x + SPACESHIP_SIZE/2, 
 		wxPoint(spaceship.get_position()).y + SPACESHIP_SIZE/2 
 	};
-	bullet_container.add(std::make_shared<bullet>(bullet_position, spaceship.get_degree()));
+	bullet_container.add(
+		std::make_shared<bullet>(bullet_position, spaceship.get_degree())
+	);
 }
 
 /* CREATE NEW RAND ASTEROIDS ===========================*/
-void draw_application::window::create_asteroids_rand(int cnt) {
+void draw_application::window::create_asteroids_rand(const int &cnt) {
 	wxPoint asteroid_position;
 	for (int i = 0; i < cnt; i++) {
 		asteroid_position = { 
 			rand() % get_size().x,
 			rand() % get_size().y 
 		};
-		asteroid_container.add(std::make_shared<asteroid>(wxPoint(asteroid_position), RAND_RADIUS, RAND_DEGREE));
+		asteroid_container.add(
+			std::make_shared<asteroid>(wxPoint(asteroid_position), RAND_RADIUS, RAND_DEGREE)
+		);
 	}
 }
 
 /* CREATE NEW ASTEROIDS ================================*/
-void draw_application::window::create_asteroids(wxRealPoint asteroid_position, int radius, int cnt) {
+void draw_application::window::create_asteroids(const wxRealPoint &asteroid_position, const int &radius, const int &cnt) {
 	for (int i = 0; i < cnt; i++) {
-		asteroid_container.add(std::make_shared<asteroid>(wxPoint(asteroid_position), radius, RAND_DEGREE));
+		asteroid_container.add(
+			std::make_shared<asteroid>(wxPoint(asteroid_position), radius, RAND_DEGREE)
+		);
 	}
 }
 
 /* CREATE NEW RAND UFO= ================================*/
-void draw_application::window::create_ufo_rand(int cnt) {
+void draw_application::window::create_ufo_rand(const int &cnt) {
 	wxPoint ufo_position;
 	for (int i = 0; i < cnt; i++) {
 		ufo_position = { 
 			rand() % get_size().x,
 			rand() % get_size().y 
 		};
-		ufo_container.add(std::make_shared<ufo>(ufo_position,RAND_DEGREE));
+		ufo_container.add(
+			std::make_shared<ufo>(ufo_position,RAND_DEGREE)
+		);
 	}
 }
 
 /* COLLISION BULLET ASTEROID ===========================*/
 void draw_application::window::check_bullet_asteroid() {
-	wxRealPoint new_asteroid_pos;
-	int new_asteroid_radius;
+	asteroid_info_t new_asteroid;
 	for (auto& b : bullet_container) {
-		wxRealPoint pos{ b->get_position() };
 		std::shared_ptr<asteroid> to_delete{ nullptr };
 		for (auto& a : asteroid_container) {
-			if (a->was_hit(pos)) {
+			if (a->was_hit(b->get_position())) {
 				to_delete = a;
-				new_asteroid_pos = a->get_position();
-				new_asteroid_radius = a->get_radius();
+				new_asteroid.pos = a->get_position();
+				new_asteroid.radius = a->get_radius();
 				status.increase_hit_counter();
 			}
 		}
-
 		if (to_delete) {
-			if (new_asteroid_radius >= 20)  
-				create_asteroids(new_asteroid_pos, new_asteroid_radius / 2, 2);
+			if (new_asteroid.radius >= 20)  
+				create_asteroids(new_asteroid.pos, new_asteroid.radius / 2, 2);
 			asteroid_container.remove(to_delete);
 		}
 	}
@@ -163,13 +170,12 @@ void draw_application::window::check_bullet_ufo() {
 		std::shared_ptr<ufo> to_delete{nullptr};
 		for (auto & u : ufo_container) {
 			if (u->was_hit(b->get_position())) {
-				std::cout << "hit ";
+				status.increase_hit_counter();
 				to_delete = u;
 			}
 		}
-		if (to_delete) {
+		if (to_delete) 
 			ufo_container.remove(to_delete);
-		}
 	}
 }
 
@@ -188,8 +194,8 @@ void draw_application::window::on_timer(const ml5::timer_event& event) {
 	for (auto &a : asteroid_container) a->move(get_size());
 	for (auto &b : bullet_container) b->move(get_size());
 	for (auto &u: ufo_container) u->move(get_size());
-	collision_detection();
 	spaceship.move(get_size());
+	collision_detection();
 	refresh();
 }
 

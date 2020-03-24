@@ -1,7 +1,8 @@
 #include "asteroid.h"
 #include <cmath>
-#define CORNER_CNT 8 
-#define CIRCLE_DEGREE 360
+
+constexpr int CORNER_CNT{ 8 };
+constexpr int CIRCLE_DEGREE{ 360 };
 
 /* GENERAL ============================================ */
 asteroid::asteroid(wxPoint pos, int radius, int degree)
@@ -39,7 +40,7 @@ void asteroid::draw(context& con) {
 }
 
 /* MOVEMENT =========================================== */
-void asteroid::move(wxSize size) {
+void asteroid::move(const wxSize &size) {
 	if (is_stopped) return;
 	dx_speed = sin(rad_of(degree)) * speed_factor;		
 	dy_speed = -cos(rad_of(degree)) * speed_factor;
@@ -50,7 +51,7 @@ void asteroid::move(wxSize size) {
 }
 
 /* COLLISION ========================================== */
-bool asteroid::was_hit(wxRealPoint bullet_pos) {
+bool asteroid::was_hit(const wxRealPoint &bullet_pos) {
 	wxRegion reg = get_region(); 
 	reg.Intersect(bullet_pos.x, bullet_pos.y, 3, 3);
 	return !reg.IsEmpty();

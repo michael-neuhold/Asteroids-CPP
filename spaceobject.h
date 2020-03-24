@@ -6,10 +6,10 @@ class spaceobject : public ml5::object {
 public:
 	spaceobject(wxPoint pos, int degree);
 
-	virtual void move(wxSize size) = 0;
-	void stay_in_universe(wxSize size);
-	bool is_in_universe(wxSize size);
-	double rad_of(int degree);
+	virtual void move(const wxSize &size) = 0;
+	void stay_in_universe(const wxSize &size);
+	bool is_in_universe(const wxSize &size);
+	double rad_of(const int &degree);
 	wxRealPoint get_position() const;
 	int get_degree() const;
 	void stop();

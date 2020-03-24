@@ -11,10 +11,10 @@ public:
 	asteroid(wxPoint pos, int radius, int degree);
 	~asteroid();
 
-	void move(wxSize size) override;
+	void move(const wxSize &size) override;
 	void draw(context& con);
 	void set_points();
-	bool was_hit(wxRealPoint bullet_pos);
+	bool was_hit(const wxRealPoint &bullet_pos);
 	wxRegion get_region() const;
 	int get_radius() const;
 	

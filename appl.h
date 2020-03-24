@@ -30,11 +30,11 @@ private:
 		void remove_bullets();
 		
 		// generate asteroids
-		void create_asteroids_rand(int cnt);
-		void create_asteroids(wxRealPoint asteroid_position, int radius, int cnt);
+		void create_asteroids_rand(const int &cnt);
+		void create_asteroids(const wxRealPoint &asteroid_position, const int &radius, const int &cnt);
 
 		// generate ufos
-		void create_ufo_rand(int cnt);
+		void create_ufo_rand(const int &cnt);
 
 		// generate bullet
 		void create_bullet();
